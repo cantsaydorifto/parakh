@@ -18,6 +18,7 @@ model User {
   lastName     String
   Image        Image[]
   RefreshToken RefreshToken[]
+  Test_user    TestUser[]
 }
 
 model RefreshToken {
@@ -32,4 +33,54 @@ model Image {
   source String
   User   User   @relation(fields: [userId], references: [id])
   userId Int
+}
+
+model Test {
+  id           Int            @id @default(autoincrement())
+  name         String
+  createdAt    DateTime       @default(now())
+  Test_user    TestUser[]
+  TestQuestion TestQuestion[]
+}
+
+model TestUser {
+  testId Int
+  Test   Test    @relation(fields: [testId], references: [id])
+  userId Int
+  User   User    @relation(fields: [userId], references: [id])
+  score  Decimal
+
+  @@id([testId, userId])
+}
+
+model Question {
+  id           Int            @id @default(autoincrement())
+  content      String
+  difficulty   Difficulty
+  Option       Option[]
+  TestQuestion TestQuestion[]
+}
+
+enum Difficulty {
+  EASY
+  MEDIUM
+  HARD
+}
+
+model Option {
+  id         Int      @id @default(autoincrement())
+  content    String
+  questionId Int
+  isAnswer   Boolean
+  Question   Question @relation(fields: [questionId], references: [id])
+}
+
+model TestQuestion {
+  testId     Int
+  Test       Test     @relation(fields: [testId], references: [id])
+  questionId Int
+  Question   Question @relation(fields: [questionId], references: [id])
+  isCorrect  Boolean
+
+  @@id([testId, questionId])
 }
