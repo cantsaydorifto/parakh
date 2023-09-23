@@ -13,10 +13,10 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 
-app.use("/api/user", user);
-app.use("/api/refresh", refresh);
+app.use("/user", user);
+app.use("/refresh", refresh);
 app.use(verifyJwt);
-app.use("/api/logout", logout);
+app.use("/logout", logout);
 
 app.listen(process.env.PORT, () => {
   console.log("Listening on port " + process.env.PORT);
