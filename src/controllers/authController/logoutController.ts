@@ -1,10 +1,21 @@
 import type { Response, Request } from "express";
 import prisma from "../../prisma";
 
-export const logoutController = async (req: Request, res: Response) => {
+export const logoutController = async (
+  req: Request & {
+    user?: {
+      id: number;
+      username: string;
+      email: string;
+    };
+  },
+  res: Response
+) => {
   const cookie = req.cookies;
   try {
-    if (!cookie.jwt) throw { status: 401, message: "Unauthorized" };
+    if (!cookie.jwt || !req.user)
+      throw { status: 401, message: "Unauthorized" };
+    console.log(req.user);
     const refreshToken = cookie.jwt as string;
     const userRefreshToken = await prisma.refreshToken.findUnique({
       where: {
