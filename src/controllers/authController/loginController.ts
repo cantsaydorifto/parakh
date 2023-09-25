@@ -83,7 +83,14 @@ export const loginController = async (
       secure: true,
       maxAge: 24 * 60 * 60 * 1000,
     });
-    res.status(200).json({ token: accessToken });
+    res.status(200).json({
+      token: accessToken,
+      username: user.username,
+      id: user.id,
+      email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName,
+    });
   } catch (err: any) {
     res
       .status(err.status || 400)
