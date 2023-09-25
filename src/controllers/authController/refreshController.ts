@@ -17,6 +17,8 @@ export const refreshController = async (req: Request, res: Response) => {
             username: true,
             email: true,
             id: true,
+            firstName: true,
+            lastName: true,
           },
         },
       },
@@ -36,7 +38,13 @@ export const refreshController = async (req: Request, res: Response) => {
         process.env.JWT_SECRET!,
         { expiresIn: "5min" }
       );
-      res.status(200).json({ user: userRefreshToken.User, token: accessToken });
+      res.status(200).json({
+        token: accessToken,
+        username: userRefreshToken.User.username,
+        email: userRefreshToken.User.email,
+        firstName: userRefreshToken.User.firstName,
+        lastName: userRefreshToken.User.lastName,
+      });
     });
   } catch (err: any) {
     res
